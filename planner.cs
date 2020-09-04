@@ -19,6 +19,8 @@ namespace Company.Function
         private static string activeDirectoryTenantId = Environment.GetEnvironmentVariable("activeDirectoryTenantId");
         private static string activeDirectoryClientId = Environment.GetEnvironmentVariable("activeDirectoryClientId");
         private static string activeDirectoryClientSecretId = Environment.GetEnvironmentVariable("activeDirectoryClientSecretId");
+        private static string userName = Environment.GetEnvironmentVariable("userName");
+        private static string userPassword = Environment.GetEnvironmentVariable("userPassword");
         [FunctionName("planner")]
         public static async Task<IActionResult> Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "planner")] HttpRequest req,
@@ -49,7 +51,6 @@ namespace Company.Function
                     Dictionary<string, dynamic> plannerData = await httpResponseMessage.Content.ReadAsAsync<Dictionary<string, dynamic>>();
                     return new OkObjectResult(plannerData);
                 }
-                    Dictionary<string, dynamic> groupData1 = await httpResponseMessage.Content.ReadAsAsync<Dictionary<string, dynamic>>();
             }
             catch(Exception ex)
             {
@@ -70,12 +71,14 @@ namespace Company.Function
             string result = null;
             Dictionary<string, string> jsonData = new Dictionary<string, string>()
             {
-                { "grant_type","client_credentials"},
+                { "grant_type","password"},
                 { "client_id",activeDirectoryClientId},
                 { "client_secret",activeDirectoryClientSecretId},
-                { "resource","https://graph.microsoft.com"}
+                { "username",userName},
+                { "password",userPassword},
+                { "scope","Group.ReadWrite.All"}
             };
-            HttpResponseMessage responseActiveDirectory = await client.PostAsync("https://login.microsoftonline.com/" + activeDirectoryTenantId + "/oauth2/token", new FormUrlEncodedContent(jsonData));
+            HttpResponseMessage responseActiveDirectory = await client.PostAsync("https://login.microsoftonline.com/" + activeDirectoryTenantId + "/oauth2/v2.0/token", new FormUrlEncodedContent(jsonData));
             if (responseActiveDirectory.IsSuccessStatusCode)
             {
                 result = (await responseActiveDirectory.Content.ReadAsAsync<Dictionary<string, dynamic>>())["access_token"];

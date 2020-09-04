@@ -64,7 +64,13 @@ namespace Company.Function
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + activeDirectoryToken);
                     HttpResponseMessage httpResponseAddMember = await client.PostAsJsonAsync(new Uri("https://graph.microsoft.com/v1.0/groups/"+groupData["id"]+"/owners/$ref"), jsonData);
-                    if (httpResponseAddMember.IsSuccessStatusCode)
+                    
+
+
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + activeDirectoryToken);
+                    HttpResponseMessage httpResponseAddMember1 = await client.PostAsJsonAsync(new Uri("https://graph.microsoft.com/v1.0/groups/"+groupData["id"]+"/members/$ref"), jsonData);
+                    if (httpResponseAddMember1.IsSuccessStatusCode)
                     {
                         return new OkObjectResult(groupData);
                     }
