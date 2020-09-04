@@ -20,6 +20,7 @@ namespace Company.Function
         private static string activeDirectoryTenantId = Environment.GetEnvironmentVariable("activeDirectoryTenantId");
         private static string activeDirectoryClientId = Environment.GetEnvironmentVariable("activeDirectoryClientId");
         private static string activeDirectoryClientSecretId = Environment.GetEnvironmentVariable("activeDirectoryClientSecretId");
+        private static string userGuid = Environment.GetEnvironmentVariable("userGuid");
 
 
 
@@ -58,7 +59,7 @@ namespace Company.Function
                     Dictionary<string, dynamic> groupData = await httpResponseMessage.Content.ReadAsAsync<Dictionary<string, dynamic>>();
                     jsonData = new Dictionary<string, dynamic>()
                     {
-                        {"@odata.id", "https://graph.microsoft.com/v1.0/users/e24b3e68-9fd2-462b-b492-e537c1976c3d"}
+                        {"@odata.id", "https://graph.microsoft.com/v1.0/users/" + userGuid}
                     };
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + activeDirectoryToken);
