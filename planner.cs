@@ -19,7 +19,7 @@ namespace Company.Function
         private static string activeDirectoryTenantId = Environment.GetEnvironmentVariable("activeDirectoryTenantId");
         private static string activeDirectoryClientId = Environment.GetEnvironmentVariable("activeDirectoryClientId");
         private static string activeDirectoryClientSecretId = Environment.GetEnvironmentVariable("activeDirectoryClientSecretId");
-        private static string userName = Environment.GetEnvironmentVariable("userName");
+        private static string userName = Environment.GetEnvironmentVariable("userName1");
         private static string userPassword = Environment.GetEnvironmentVariable("userPassword");
         [FunctionName("planner")]
         public static async Task<IActionResult> Run(
